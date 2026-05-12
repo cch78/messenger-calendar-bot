@@ -1,0 +1,10 @@
+.env
+token.json
+data/
+node_modules/
+__pycache__/
+*.pyc
+bot_out.txt
+bot_err.txt
+hanmc_bundle.js
+client_secret_*.json

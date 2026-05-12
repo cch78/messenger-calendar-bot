@@ -1,0 +1,4 @@
+discord.py==2.7.1
+anthropic==0.101.0
+notion-client==2.3.0
+python-dotenv==1.2.2
