@@ -256,20 +256,22 @@ async def send_long(channel, text: str):
     for chunk in chunks:
         await channel.send(chunk)
 
-@tasks.loop(time=datetime.now(KST).replace(hour=8, minute=0, second=0, microsecond=0).timetz())
+@tasks.loop(minutes=1)
 async def daily_report():
+    """매분 실행, 오전 8시(KST)에만 보고 전송."""
+    now = now_kst()
+    if now.hour != 8 or now.minute != 0:
+        return
     channel = client.get_channel(REPORT_CHANNEL)
     if not channel:
         channel = await client.fetch_channel(REPORT_CHANNEL)
     ds = yesterday_str()
-    print(f"일일 보고 생성: {ds}")
+    print(f"일일 보고 생성: {ds}", flush=True)
     report = await generate_report(ds)
     await send_long(channel, report)
-
-    # 노션 자동 동기화 (설정된 경우)
     if notion and NOTION_DB_ID:
         result = await sync_to_notion(ds)
-        print(f"Notion 동기화: {result}")
+        print(f"Notion 동기화: {result}", flush=True)
 
 @client.event
 async def on_ready():
