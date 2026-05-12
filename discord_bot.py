@@ -344,4 +344,22 @@ async def on_message(msg: discord.Message):
         )
         await msg.reply(help_text)
 
+# ── 헬스체크 HTTP 서버 (Render 무료 Web Service 슬립 방지) ───────────────
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
+
+class HealthHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.end_headers()
+        self.wfile.write(b"OK")
+    def log_message(self, *args):
+        pass  # 액세스 로그 무음
+
+def run_health_server():
+    port = int(os.environ.get("PORT", 10000))
+    HTTPServer(("0.0.0.0", port), HealthHandler).serve_forever()
+
+threading.Thread(target=run_health_server, daemon=True).start()
+
 client.run(os.environ["DISCORD_TOKEN"])

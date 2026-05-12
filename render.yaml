@@ -1,7 +1,8 @@
 services:
-  - type: worker
+  - type: web
     name: haniwon-discord-bot
     env: python
+    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: python discord_bot.py
     envVars:
