@@ -1,3 +1,4 @@
+from __future__ import annotations
 import sys
 if sys.platform == 'win32':
     sys.stdout.reconfigure(encoding='utf-8')
